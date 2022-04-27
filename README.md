@@ -8,11 +8,11 @@ A simple example is linear regression: finding a straight line to best fit a set
 Practical problems typically consist of inputs in more than one dimension, sometimes much more, and observations for each vector of inputs. A curve, plane, or hyperplane is then found to best fit the observations. That is what ordinary least squares finds.
 
 ## Ways to do this
-Excel's `linest` command will solve the simpler linear regression problem, see links here.
+Excel's `linest` command will solve single and multiple linear regression problems, see [here](https://support.microsoft.com/en-us/office/linest-function-84d7d0d9-6e50-4101-977a-fa7abf772b6d).
 
-Matlab's ? command, see documentation.
+Matlab's [fit](https://www.mathworks.com/help/curvefit/fit.html) and [lsqcurvefit](https://www.mathworks.com/help/optim/ug/lsqcurvefit.html) commands do this, also see their writeup on [least squares fitting](https://www.mathworks.com/help/curvefit/least-squares-fitting.html).
 
-In R, you can do ...
+A number of tutorials demonstrate ordinary least squares in R, like [here](https://www.r-econometrics.com/methods/ols/) and [here](https://www.r-bloggers.com/2017/07/ordinary-least-squares-ols-linear-regression-in-r/) and [here](https://www.ssc.wisc.edu/sscc/pubs/RFR/RFR_Regression.html).
 
 Or use this software from the command line or use this library in your own C or C++ code.
 
