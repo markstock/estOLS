@@ -17,14 +17,19 @@ A number of tutorials demonstrate ordinary least squares in R, like [here](https
 Or use this software from the command line or use this library in your own C or C++ code.
 
 ## Build and run this software
-On a Linux workstation, you can see if Eigen3 is installed. If not, you or an administrator can run
+On a RHEL/Fedora/CentOS workstation, you can install all prerequisites using:
 
-    sudo dnf install eigen3
+	sudo dnf install make gcc-c++ eigen3-devel
 
-When that's done, try
+or on Ubuntu with:
 
-    make
-    ./estOLS -test
+	sudo apt install build-essential
+	sudo apt-get install libeigen3-dev
+
+When that's done, try the following:
+
+	make
+	./estOLS -test
 
 If that works, then prepare your ? matrix and vector of observations in two comma-separated value files and run
 
@@ -34,7 +39,7 @@ If that works, then prepare your ? matrix and vector of observations in two comm
 Here's how to do that.
 
 ## How to get help
-Go to Issues, just below the title bar on this page, and ask your question.
+Go to [Issues](https://github.com/markstock/estOLS/issues) (just below the title bar on this page), and "create an issue."
 
 ## Thanks
-Thanks to the writers of Eigen3 for their thorough matrix mathematics package.
+Thanks to the writers of Eigen3 for their excellent matrix mathematics package.
