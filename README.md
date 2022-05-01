@@ -3,9 +3,11 @@ Ordinary Least Squares problem, guide, and solver
 
 ## Fitting a line/plane to experimental data
 If you want the best-fit line or plane to a set of disordered observations, you want to solve a least squares problem.
-A simple example is linear regression: finding a straight line to best fit a set of (x,y) observations, as illustrated below. The unknown line is defined by two parameters: slope and intercept; and we seek the set of parameters that minimizes the squared error of the observations vs. their inputs.
+A simple example is linear regression: finding a straight line to best fit a set of (x,y) observations, as illustrated below. The unknown line is defined by two parameters: slope and intercept; and we seek the set of parameters that minimizes the squared error of the observations (y) vs. their inputs (x).
 
-Practical problems typically consist of inputs in more than one dimension, sometimes much more, and observations for each vector of inputs. A curve, plane, or hyperplane is then found to best fit the observations. That is what ordinary least squares finds.
+![linearregression](ols_example.png?raw=true "Linear regression sample")
+
+Practical problems typically consist of a large number of samples, and more than one dimension of inputs (x), or "explanatory variables." A curve, plane, or hyperplane is then found to best fit the observations. That is what ordinary least squares finds.
 
 ## Ways to do this
 Excel's `linest` command will solve single and multiple linear regression problems, see [here](https://support.microsoft.com/en-us/office/linest-function-84d7d0d9-6e50-4101-977a-fa7abf772b6d).
@@ -43,3 +45,5 @@ Go to [Issues](https://github.com/markstock/estOLS/issues) (just below the title
 
 ## Thanks
 Thanks to the writers of Eigen3 for their excellent matrix mathematics package.
+The image of linear regression is from Hutcheson, G. D. (2011). Ordinary Least-Squares Regression. In L. Moutinho and G. D.
+Hutcheson, The SAGE Dictionary of Quantitative Management Research. Pages 224-228 [link](https://datajobs.com/data-science-repo/OLS-Regression-[GD-Hutcheson].pdf)
