@@ -44,6 +44,6 @@ Here's how to do that.
 Go to [Issues](https://github.com/markstock/estOLS/issues) (just below the title bar on this page), and "create an issue."
 
 ## Thanks
-Thanks to the writers of Eigen3 for their excellent matrix mathematics package.
+Thanks to the writers of [Eigen3](https://eigen.tuxfamily.org/dox/index.html) for their excellent matrix mathematics package.
 The image of linear regression is from Hutcheson, G. D. (2011). Ordinary Least-Squares Regression. In L. Moutinho and G. D.
-Hutcheson, The SAGE Dictionary of Quantitative Management Research. Pages 224-228 [link](https://datajobs.com/data-science-repo/OLS-Regression-[GD-Hutcheson].pdf)
+Hutcheson, The SAGE Dictionary of Quantitative Management Research. Pages 224-228 [[link]](https://datajobs.com/data-science-repo/OLS-Regression-[GD-Hutcheson].pdf)
