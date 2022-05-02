@@ -30,12 +30,18 @@ or on Ubuntu with:
 
 When that's done, try the following:
 
+	git clone https://github.com/markstock/estOLS.git
+	cd estOLS
 	make
 	./estOLS -test
 
-If that works, then prepare your ? matrix and vector of observations in two comma-separated value files and run
+If that works, then prepare your regression matrix and vector of observations in two comma-separated value files and run
 
-	./estOLS -x matrix.csv -y observations.csv
+	./estOLS -x matrix.csv -y observations.csv > myoutput.csv
+
+or
+
+	./estOLS -x matrix.csv -y observations.csv -o myoutput.csv
 
 ## Use this as a library in your own code
 Here's how to do that.
