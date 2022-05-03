@@ -1,5 +1,5 @@
 # estOLS
-Ordinary Least Squares problem, guide, and solver
+[Ordinary Least Squares](https://en.wikipedia.org/wiki/Ordinary_least_squares) problem, guide, and solver
 
 ## Fitting a line/plane to experimental data
 If you want the best-fit line or plane to a set of disordered observations, you want to solve a least squares problem.
