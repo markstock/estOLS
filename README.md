@@ -47,7 +47,7 @@ or
 Here's how to do that.
 
 ## Performance
-We ran this code on a set of random inputs (both regression matrix and observations [-1..1]) in double precision using the normal equations solution method and timed the calculation on an AMD Ryzen 9 3950X. One set of problems set the number of observations to be 2 times the number of independent variables, and a second set used a factor of 10. The performance for a variety of problem sizes (number of independent variables m) appears below. Total run time seems to scale as O(m^3 n^{0.75}).
+We ran this code on a set of random inputs (both regression matrix and observations [-1..1]) in double precision using the normal equations solution method and timed the calculation on an AMD Ryzen 9 3950X. One set of problems set the number of observations to be 2 times the number of independent variables, and a second set used a factor of 10. The performance for a variety of problem sizes (number of independent variables m) appears below. Total run time seems to scale as O(m<sup>3</sup> n<sup>0.75</sup>).
 
 m     | n      | time (sec) | n      | time (sec)
 ------|--------|------------|--------|-----------
