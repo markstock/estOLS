@@ -7,7 +7,7 @@ A simple example is linear regression: finding a straight line to best fit a set
 
 ![linearregression](ols_example.png?raw=true "Linear regression sample")
 
-Practical problems typically consist of a large number of samples, and more than one dimension of inputs (x), or "explanatory variables." A curve, plane, or hyperplane is then found to best fit the observations. That is what ordinary least squares finds.
+Practical problems typically consist of a large number of samples, and more than one dimension of inputs (x), or "explanatory variables." Ordinary least squares finds the curve, plane, or hyperplane that best fits the observations.
 
 ## Ways to do this
 Excel's `linest` command will solve single and multiple linear regression problems, see [here](https://support.microsoft.com/en-us/office/linest-function-84d7d0d9-6e50-4101-977a-fa7abf772b6d).
@@ -43,14 +43,13 @@ or
 
 	./estOLS -x xmat.csv -y obsv.csv -o out.csv
 
-## Use this as a library in your own code
-Here's how to do that.
-
 ## Performance
 We ran this code on a set of random inputs (both regression matrix and observations [-1..1]) in double precision using the normal equations solution method and timed the calculation on an AMD Ryzen 9 3950X. One set of problems set the number of observations to be 2 times the number of independent variables, and a second set used a factor of 10. The performance for a variety of problem sizes (number of independent variables m) appears below. Total run time seems to scale as O(m<sup>3</sup> n<sup>0.75</sup>).
 
 m     | n      | time (sec) | n      | time (sec)
 ------|--------|------------|--------|-----------
+100   | 200    | 0.000379   | 1000   | 0.001167
+200   | 400    | 0.002203   | 2000   | 0.003802
 500   | 1000   | 0.013250   | 5000   | 0.049815
 1000  | 2000   | 0.098714   | 10000  | 0.397258
 2000  | 4000   | 0.802492   | 20000  | 3.195111
