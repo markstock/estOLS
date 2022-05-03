@@ -16,7 +16,9 @@ Matlab's [fit](https://www.mathworks.com/help/curvefit/fit.html) and [lsqcurvefi
 
 A number of tutorials demonstrate ordinary least squares in R, like [here](https://www.r-econometrics.com/methods/ols/) and [here](https://www.r-bloggers.com/2017/07/ordinary-least-squares-ols-linear-regression-in-r/) and [here](https://www.ssc.wisc.edu/sscc/pubs/RFR/RFR_Regression.html).
 
-Or use this software from the command line or use this library in your own C or C++ code.
+For very large problems, an iterative method will likely be faster. Consider NVIDIA's [cuSOLVER](https://docs.nvidia.com/cuda/cusolver/index.html), or implementations of the [Levenberg–Marquardt algorithm](https://en.wikipedia.org/wiki/Levenberg%E2%80%93Marquardt_algorithm) like [this](https://gpufit.readthedocs.io/en/latest/introduction.html) and [this](https://eigen.tuxfamily.org/dox/unsupported/group__NonLinearOptimization__Module.html).
+
+For moderate-sized problems, you can use this software from the command line or copy it into your own C or C++ code.
 
 ## Build and run this software
 On a RHEL/Fedora/CentOS workstation, you can install all prerequisites using:
