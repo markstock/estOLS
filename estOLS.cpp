@@ -122,7 +122,6 @@ int main(int argc, char const *argv[]) {
       if (std::isdigit(argv[iarg+1][0])) n = atoi(argv[++iarg]); else usage(argv[0]);
       // hold off on size checking until later
       speedtest = true;
-      std::cout << "running speed test with m=" << m << " and n="<< n << "\n";
     } else if (strncmp(argv[iarg], "-o", 2) == 0) {
       outfile = argv[++iarg];
       std::cout << "output weights file is " << outfile << "\n";
@@ -153,6 +152,8 @@ int main(int argc, char const *argv[]) {
 
     // that's going to take forever
     assert(n*m < 2000000000 && "Test matrix very large - are you sure?");
+
+    std::cout << "Running speed test with m=" << m << " and n="<< n << "\n";
 
     // allocate and initialize sample data
     auto start = std::chrono::system_clock::now();
@@ -248,6 +249,7 @@ int main(int argc, char const *argv[]) {
   const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision, Eigen::DontAlignCols, ", ", "\n");
   if (outfile.empty()) {
     // send to stdout
+    std::cerr << "The solution parameters/coefficients are:\n";
     std::cout << B.format(CSVFormat) << std::endl;
   } else {
     // send to file
