@@ -1,6 +1,7 @@
 CXX=g++
 INC=-I/usr/include/eigen3
-CXXFLAGS=-g -ggdb
+#CXXFLAGS=-g -ggdb
+CXXFLAGS=-Ofast -march=native
 
 all : estOLS
 
