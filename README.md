@@ -35,13 +35,13 @@ When that's done, try the following:
 	make
 	./estOLS -test
 
-If that works, then prepare your regression matrix and vector of observations in two comma-separated value files and run
+If that works, then prepare your regression matrix and vector of observations in two comma-separated value files (or use the sample files provided) and run
 
-	./estOLS -x matrix.csv -y observations.csv > myoutput.csv
+	./estOLS -x xmat.csv -y obsv.csv > out.csv
 
 or
 
-	./estOLS -x matrix.csv -y observations.csv -o myoutput.csv
+	./estOLS -x xmat.csv -y obsv.csv -o out.csv
 
 ## Use this as a library in your own code
 Here's how to do that.
