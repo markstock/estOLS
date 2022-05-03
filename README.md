@@ -57,6 +57,8 @@ m     | n      | time (sec) | n      | time (sec)
 5000  | 10000  | 18.00390   | 50000  | 55.97039
 10000 | 20000  | 141.7969   | 100000 | 437.0685
 
+![performance](perf.png?raw=true "Performance vs. m")
+
 ## How to get help
 Go to [Issues](https://github.com/markstock/estOLS/issues) (just below the title bar on this page), and "create an issue."
 
