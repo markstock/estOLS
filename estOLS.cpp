@@ -9,7 +9,10 @@
 
 #include <ciso646>	// for C++11 stuff that MSVC can't get right
 #include <cstdint>	// for int32_t and the like
+#include <cstdlib>	// for atoi
+#include <string>	// for string, stod
 #include <cassert>
+#include <vector>
 #include <chrono>
 #include <iomanip>	// for setprecision
 #include <iostream>
@@ -17,13 +20,68 @@
 #include <cctype>	// for isdigit
 
 //
+// read a matrix or vector from a file
+//
+Eigen::MatrixXd read_matrix_csv(const std::string infile) {
+
+  // the entries are stored as tempvec=[a,b,c,d,e,f], that is the variable "tempvec" is a row vector
+  // later on, this vector is mapped into the Eigen matrix format
+  std::vector<double> tempvec;
+
+  // input data filestream
+  std::ifstream indatafs(infile);
+  assert(indatafs.is_open() && "Could not open input matrix csv file");
+ 
+  // this variable is used to store the row of the matrix that contains commas 
+  std::string rowstring;
+ 
+  // this variable is used to store the matrix entry as a string;
+  std::string valasstr;
+ 
+  // this variable is used to track the number of rows
+  int32_t nrows = 0;
+  int32_t ncols = 0;
+
+  // read row-by-row
+  while (std::getline(indatafs, rowstring)) {
+    std::stringstream rowstream(rowstring);
+    int32_t thisncols = 0;
+ 
+    // read pieces of the stream until a comma, and store it in nextval
+    while (std::getline(rowstream, valasstr, ',')) {
+      tempvec.push_back(std::stod(valasstr));   // convert the string to double and add to the vector
+      ++thisncols;
+    }
+
+    if (nrows == 0) {
+      // this is the first row!
+      ncols = thisncols;
+      std::cerr << "file (" << infile << ") has " << ncols << " columns..." << std::flush;
+    } else {
+      assert(thisncols == ncols && "Row found with different number of columns");
+      //assert(("Row found with "+std::to_string(thisncols)+" columns instead of "+std::to_string(ncols), thisncols == ncols));
+    }
+
+    // increment rows
+    ++nrows;
+  }
+  indatafs.close();
+
+  std::cerr << "and " << nrows << " rows" << std::endl;
+
+  // here we convet the vector variable into the matrix and return the resulting object, 
+  // note that tempvec.data() is the pointer to the first memory location at which the entries of the vector tempvec are stored;
+  return Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(tempvec.data(), nrows, ncols);
+}
+
+//
 // basic usage
 //
 static void usage(char const *progname) {
   std::cerr << "Usage:\n";
-  std::cerr << "  " << progname << " -x observations.csv -y response.csv [-o output.csv] [-t m n]\n\n";
-  std::cerr << "  where observations.csv is an n (rows) by m (columns) matrix where n > m,\n";
-  std::cerr << "  and response.csv is an n (rows) vector of responses/outcomes,\n";
+  std::cerr << "  " << progname << " -x regression.csv -y observations.csv [-o output.csv] [-t m n]\n\n";
+  std::cerr << "  where regression.csv is an n (rows) by m (columns) matrix where n > m, (one row per line),\n";
+  std::cerr << "  and observations.csv is an n (rows) vector of responses/outcomes (one per line),\n";
   std::cerr << "  alternatively use -t to perform a speed test with the given n and m.\n";
   std::cerr << "  Output is in csv format and goes to stdout unless -o is used.\n";
   exit(1);
@@ -41,14 +99,15 @@ int main(int argc, char const *argv[]) {
   //
 
   // default values
-  std::string inmatrixfile = "mat.csv";
-  std::string inobservfile = "observ.csv";
-  std::string outfile = "";
+  std::string inmatrixfile;
+  std::string inobservfile;
+  std::string outfile;
   bool speedtest = false;
   size_t n = 10;
   size_t m = 2;
 
   // parse the command-line arguments
+  if (argc < 4) usage(argv[0]);
   for (int iarg=1; iarg<argc; ++iarg) {
     if (strncmp(argv[iarg], "-x", 2) == 0) {
       inmatrixfile = argv[++iarg];
@@ -89,6 +148,9 @@ int main(int argc, char const *argv[]) {
 
   if (speedtest) {
 
+    // that's going to take forever
+    assert(n*m < 2000000000 && "Test matrix very large - are you sure?");
+
     // allocate and initialize sample data
     auto start = std::chrono::system_clock::now();
     Xmat = Eigen::MatrixXd::Random(n, m);
@@ -102,8 +164,24 @@ int main(int argc, char const *argv[]) {
   } else {
 
     // read from files
+    // from https://aleksandarhaber.com/eigen-matrix-library-c-tutorial-saving-and-loading-data-in-from-a-csv-file/
 
+    assert((not inmatrixfile.empty()) && "No input matrix file given on command-line");
+    assert((not inobservfile.empty()) && "No input observations file given on command-line");
 
+    Xmat = read_matrix_csv(inmatrixfile);
+    if (Xmat.size()<300) std::cerr << "Xmat is\n" << Xmat << std::endl;
+
+    // now read in the file with the observations, one per line
+    Eigen::MatrixXd ytemp = read_matrix_csv(inobservfile);
+    if (ytemp.cols() > 1) std::cerr << "  " << inobservfile << " has more than one column, using only the first column\n";
+
+    // pull out just the left column
+    y = ytemp.leftCols(1);
+    if (y.size()<30) std::cerr << "yvec is\n" << y << std::endl;
+
+    //if (y.cols() > 1) std::cerr <<
+    assert(Xmat.rows() == y.rows() && "Row counts in X and y do not agree!");
   }
 
   //
@@ -169,7 +247,7 @@ int main(int argc, char const *argv[]) {
     // from https://aleksandarhaber.com/eigen-matrix-library-c-tutorial-saving-and-loading-data-in-from-a-csv-file/
     std::ofstream file(outfile);
     if (file.is_open()) {
-      file << B.format(CSVFormat);
+      file << B.format(CSVFormat) << std::endl;
       file.close();
     }
   }
