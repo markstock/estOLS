@@ -79,10 +79,11 @@ Eigen::MatrixXd read_matrix_csv(const std::string infile) {
 //
 static void usage(char const *progname) {
   std::cerr << "Usage:\n";
-  std::cerr << "  " << progname << " -x regression.csv -y observations.csv [-o output.csv] [-t m n]\n\n";
+  std::cerr << "  " << progname << " -x regression.csv -y observations.csv [-qr] [-o output.csv] [-t m n]\n\n";
   std::cerr << "  where regression.csv is an n (rows) by m (columns) matrix where n > m, (one row per line),\n";
   std::cerr << "  and observations.csv is an n (rows) vector of responses/outcomes (one per line),\n";
   std::cerr << "  alternatively use -t to perform a speed test with the given n and m.\n";
+  std::cerr << "  Toggle -qr to use QR decomposition if the default normal equations fail .\n";
   std::cerr << "  Output is in csv format and goes to stdout unless -o is used.\n";
   exit(1);
 }
@@ -103,6 +104,7 @@ int main(int argc, char const *argv[]) {
   std::string inobservfile;
   std::string outfile;
   bool speedtest = false;
+  bool use_qr = false;
   size_t n = 10;
   size_t m = 2;
 
@@ -124,8 +126,9 @@ int main(int argc, char const *argv[]) {
     } else if (strncmp(argv[iarg], "-o", 2) == 0) {
       outfile = argv[++iarg];
       std::cout << "output weights file is " << outfile << "\n";
-    // add -cn for finding condition number
-    // add -qr to force QR decomposition (if normal equations are slow)
+    } else if (strncmp(argv[iarg], "-qr", 3) == 0) {
+      // force QR decomposition (if normal equations are slow)
+      use_qr = true;
     } else {
       // fail on everything else
       usage(argv[0]);
@@ -213,24 +216,28 @@ int main(int argc, char const *argv[]) {
   // this isn't working, but would be too slow anyway
   //std::cout << "The least-squares solution is:\n" << Xmat.template bdcSvd<Eigen::ComputeThinU | Eigen::ComputeThinV>().solve(y) << std::endl;
 
-  // Normal equations - fastest but less stable/precise
-  if (true) {
-    auto start = std::chrono::system_clock::now();
-    B = (Xmat.transpose() * Xmat).ldlt().solve(Xmat.transpose() * y);
-    //std::cout << "The solution using normal equations is:\n" << B << std::endl;
-    auto end = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end-start;
-    std::cerr << "NEq time: \t[" << elapsed_seconds.count() << "] seconds" << std::endl;
-  }
+  auto start = std::chrono::system_clock::now();
 
-  // QR decomposition - compromise between speed and stability
-  if (false) {
-    auto start = std::chrono::system_clock::now();
+  if (use_qr) {
+    // QR decomposition - compromise between speed and stability
     B = Xmat.colPivHouseholderQr().solve(y);
     //std::cout << "The solution using the QR decomposition is:\n" << B << std::endl;
-    auto end = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end-start;
-    std::cerr << "QR time: \t[" << elapsed_seconds.count() << "] seconds" << std::endl;
+    std::cerr << "QR time: \t[";
+
+  } else {
+    // Normal equations - fastest but less stable/precise
+    B = (Xmat.transpose() * Xmat).ldlt().solve(Xmat.transpose() * y);
+    //std::cout << "The solution using normal equations is:\n" << B << std::endl;
+    std::cerr << "NEq time: \t[";
+  }
+
+  auto end = std::chrono::system_clock::now();
+  std::chrono::duration<double> elapsed_seconds = end-start;
+  std::cerr << elapsed_seconds.count() << "] seconds" << std::endl;
+
+  // calculate p-values and R^2
+  if (false) {
+    // this is best done in R, Matlab, or a specific-build statistics software
   }
 
   //

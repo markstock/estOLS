@@ -23,7 +23,7 @@ On a RHEL/Fedora/CentOS workstation, you can install all prerequisites using:
 
 	sudo dnf install make gcc-c++ eigen3-devel
 
-or on Ubuntu with:
+or on Debian/Ubuntu with:
 
 	sudo apt install build-essential
 	sudo apt-get install libeigen3-dev
@@ -33,7 +33,7 @@ When that's done, try the following:
 	git clone https://github.com/markstock/estOLS.git
 	cd estOLS
 	make
-	./estOLS -test
+	./estOLS -test 2 10
 
 If that works, then prepare your regression matrix and vector of observations in two comma-separated value files (or use the sample files provided) and run
 
@@ -42,6 +42,8 @@ If that works, then prepare your regression matrix and vector of observations in
 or
 
 	./estOLS -x xmat.csv -y obsv.csv -o out.csv
+
+The solution procedure uses the normal equations by default, but if those do not provide an answer or are not precise enough, add the `-qr` option to force the solution to use the QR decomposition instead.
 
 ## Performance
 We ran this code on a set of random inputs (both regression matrix and observations [-1..1]) in double precision using the normal equations solution method and timed the calculation on an AMD Ryzen 9 3950X. One set of problems set the number of observations to be 2 times the number of independent variables, and a second set used a factor of 10. The performance for a variety of problem sizes (number of independent variables m) appears below. Total run time seems to scale as O(m<sup>3</sup> n<sup>0.75</sup>).
