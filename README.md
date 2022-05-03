@@ -46,6 +46,22 @@ or
 ## Use this as a library in your own code
 Here's how to do that.
 
+## Performance
+We ran this code on a set of random inputs (both regression matrix and observations [-1..1]) in double precision using the normal equations solution method and timed the calculation on an AMD Ryzen 9 3950X. The performance for a variety of problem sizes appears below.
+
+m     | n      | time (sec)
+------|--------|-----------
+500   | 1000   | 0.013250
+1000  | 2000   | 0.098714
+2000  | 4000   | 0.802492
+5000  | 10000  | 18.00390
+10000 | 20000  | 141.7969
+500   | 5000   | 0.049815
+1000  | 10000  | 0.397258
+2000  | 20000  | 3.195111
+5000  | 50000  | 55.97039
+10000 | 100000 | 437.0685
+
 ## How to get help
 Go to [Issues](https://github.com/markstock/estOLS/issues) (just below the title bar on this page), and "create an issue."
 
